@@ -5,6 +5,8 @@ Exploring GPU computing with my answers to exercises from the book Programming M
 
 This repository contains my solutions and implementations for the exercises in the book **Programming Massively Parallel Processors** by *Wen-mei W. Hwu, David B. Kirk, and Izzat El Hajj*.
 
+![Front Page](front_page.png)
+
 ## 📖 About the Book
 *Programming Massively Parallel Processors (PMPP)* is a foundational book for learning GPU computing, CUDA programming, and massively parallel architectures. The exercises cover:
 - GPU architecture and CUDA fundamentals
