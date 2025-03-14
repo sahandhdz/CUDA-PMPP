@@ -28,7 +28,7 @@ We can then use this global index to map threads to data indexes.
 
 
 
-#### 2. Assume that we want to use each thread to calculate two adjacent elements of  a vector addition. What would be the expression for mapping the thread/block indices to the data index (i) of the first element to ocessed by a thread?
+#### 2. Assume that we want to use each thread to calculate two adjacent elements of  a vector addition. What would be the expression for mapping the thread/block indices to the data index (i) of the first element to accessed by a thread?
 
 In this case, the number of required threads should ne halved. So we can write the kernel function as:
 
