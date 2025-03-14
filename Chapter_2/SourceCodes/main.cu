@@ -1,4 +1,4 @@
-//#include <stdio.h>
+#include <stdio.h>
 #include <cstdio>
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
@@ -19,9 +19,17 @@ void vecAdd(float* A_h, float *B_h, float *C_h, int n){
     int size = n* sizeof(float);
     float *A_d, *B_d, *C_d;
 
+    cudaError_t err;
+
     // Part 1: Allocate device memory for A, B, and C
     // Copy A and B to device memory
-    cudaMalloc((void**)&A_d, size);
+    err = cudaMalloc((void**)&A_d, size);
+    if (err == cudaSuccess){
+        printf("Successful device memory allocation!\n");
+    }else{
+        printf("Unsuccessful memory allocation!\n");
+    }
+
     cudaMalloc((void**)&B_d, size);
     cudaMalloc((void**)&C_d, size);
 

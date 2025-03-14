@@ -92,4 +92,62 @@ Well, it might be a little hard to understand. So consider the below facts:
 3. &A_d will be of type `float **`.
 4. `(void **) &A_d` casts the **pointer to a float pointer** to the **pointer to a void pointer**.
 
-#### 7. If we want to copy
+#### 7. If we want to copy 3000 bytes of data from host array `A_h` to device array `A_d`, what would be an appropriate API call for this data copy in CUDA.
+
+```c++
+cudaMemcpy(A_d, A_h, 3000, cudaMemcopyHostToDevice);
+```
+
+#### 8. How would one declare a variable err that can appropriately receive the returned value of a CUDA API call?
+
+You can use built-in CUDA error type `cudaError_t` for this purpose. The implementation should be something like this:
+
+```c++
+cudaError_t err;
+err = cudaMalloc((void**)&A_d, size);
+if (err == cudaSuccess){
+	printf("Successful device memory allocation!\n");
+}else{
+	printf("Unsuccessful memory allocation!\n");
+}
+```
+
+#### 9. Consider the following CUDA kernel and the corresponding host function that calls it:
+```c++
+__global__
+void foo_kernel(float* a, float* b, unsigned int N){
+	unsigned int i = blockIdx.x*blockDim.x + threadIdx.x;
+	if (i<N){
+		b[i] = 2.7f*a[i] - 4.3f;
+	}
+}
+
+void foo(float* a_d, float* b_d){
+	unsigned int N = 200000;
+	foo_kernel<<<(N+128-1)/128, 128>>>(a_d, b_d, N);
+}
+```
+
+#### What is the number of threads per block?
+
+128
+
+#### What is the number of threads in the grid?
+
+We have 200127/128=1563 blocks. So there will be 1563*128=200,064 threads in total.
+
+#### What is the number of blocks in the grid?
+
+As we said above, 1563 blocks.
+
+#### What is the number of threads that execute the code on line 03?
+
+All threads execute this like, so 200,064 threads execute this line in parallel.
+
+#### What is the number of threads that execute the code on line 05?
+
+Only the first 200,000 threads pass the condition on line 04. Hence, 200,000 threads execute line 05
+
+#### 10. A new summer inter was frustrated with CUDA. He has been complaining that CUDA is very tedious. He had to declare many functions that he plans to execute on both the host and the device twice, once as host function and once as a device function. What is your response?
+
+One can use both qualifiers, `__host__` and `__device__`,  in a function declaration.
