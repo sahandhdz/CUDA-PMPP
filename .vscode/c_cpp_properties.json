@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "windows-clang-x64",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/opencv/build/install/include/**",
+                "C:/opencv/build/install/include/opencv2/**",
+                "C:\\Users\\skafash\\Desktop\\CUDA-PMPP\\Chapter_3\\SourceCodes\\stb-master\\**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.20348.0",
+            "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Preview/VC/Tools/MSVC/14.44.34823/bin/Hostx64/x64/cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}
