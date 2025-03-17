@@ -14,7 +14,7 @@
 
 
 __global__
-void blurkernel(unsigned char* img_input, unsigned char* img_output, int width, int height, int blur_size){
+void blurKernel(unsigned char* img_input, unsigned char* img_output, int width, int height, int blur_size){
     // col and row indices, specifying the unqiue coordinate assigned to each thread (we use a 2D thread mapping)
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     int row = blockIdx.y * blockDim.y + threadIdx.y;
