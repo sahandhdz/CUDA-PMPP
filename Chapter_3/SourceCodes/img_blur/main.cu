@@ -20,7 +20,9 @@ void blurkernel(unsigned char* img_input, unsigned char* img_output, int width, 
     int row = blockIdx.y * blockDim.y + threadIdx.y;
 
     if (col < width && row < height){
-        int pix_sum = 0;
+        int r_sum = 0;
+        int g_sum = 0;
+        int b_sum = 0;
         int pix_num = 0;
 
         for (int i=-blur_size; i<blur_size+1; i++){
@@ -29,19 +31,18 @@ void blurkernel(unsigned char* img_input, unsigned char* img_output, int width, 
                 int current_col = col+j;
 
                 if (current_row >=0 && current_row <height && current_col >=0 && current_col < width){
-                    pix_sum += img_input[current_row*width + current_col];
+                    r_sum += img_input[current_row*width*3 + current_col*3];
+                    g_sum += img_input[current_row*width*3 + current_col*3 + 1];
+                    b_sum += img_input[current_row*width*3 + current_col*3 + 2];
                     pix_num ++;
                 }
             }
         }
-        img_output[row*width + col] = (unsigned char)(pix_sum/pix_num);
+        img_output[row*width*3 + col] = (unsigned char)(r_sum/pix_num);
+        img_output[row*width*3 + col + 1] = (unsigned char)(g_sum/pix_num);
+        img_output[row*width*3 + col + 2] = (unsigned char)(b_sum/pix_num);
     }
 }
-
-
-
-
-
 
 
 int main(){
