@@ -80,7 +80,7 @@ int main(){
     // Reading the image using stb_image.h header by Sean T. Barrett (that's why it starts with stb!).
     // (github.com/nothings/stb)
     int width, height, channels;
-    unsigned char* img = stbi_load("ladybug.jpg", &width, &height, &channels, 0);
+    unsigned char* img = stbi_load("paprika.jpg", &width, &height, &channels, 0);
     
     if (!img) {
         std::cerr << "Error loading image!" << std::endl;
@@ -89,11 +89,11 @@ int main(){
 
     unsigned char* img_blur = new unsigned char[width*height*3];
 
-    int blur_size = 8;
+    int blur_size = 6;
     blurImage(img, img_blur, width, height, blur_size);
 
     // Saving the final image.
-    std::string filename = "ladybug_Grey_blur.jpg";
+    std::string filename = "paprike_blurred.jpg";
     save_rgb_image(filename, img_blur, width, height);
 
     // Free image memory
