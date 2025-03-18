@@ -39,8 +39,8 @@
   "C_Cpp_Runner.linkerArgs": [],
   "C_Cpp_Runner.includePaths": [
     "${workspaceFolder}/**",
-    "C:/opencv/opencv/build/include/",
-    "C:/opencv/opencv/build/include/opencv2"
+    "C:/opencv/build/include/**",
+    "C:/opencv/build/include/opencv2/**"
   ],
   "C_Cpp_Runner.includeSearch": [
     "*",
