@@ -21,6 +21,12 @@ void matrixMulKernel(float* M, float* N, float* P, int row_M, int col_M, int row
 }
 
 void matrixMul(float* M_h, float* N_h, float* P_h, int row_M, int col_M, int row_N, int col_N){
+
+    if (col_M != row_N){
+        std::cerr << "Error: Invalid Matrix Dimensions. col_M = " << col_M << " must be qual to row_N = " << row_N << std::endl;
+        return;
+    }
+
     int size_M = row_M*col_M*sizeof(float);
     int size_N = row_N*col_N*sizeof(float);
     int size_P = row_M*col_N*sizeof(float);
