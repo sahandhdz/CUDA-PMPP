@@ -24,6 +24,24 @@ void matrixMulRowKernel(float* M, float* N, float* P, int row_M, int col_M, int 
 
 #### b. Write a kernel that ahs each thread produce one output matrix column. Fill in the execution configuration parameters for the design.
 
-
+```c++
+__global__
+void matrixMulColKernel(float* M, float* N, float* P, int row_M, int col_M, int row_N, int col_N){
+    int col = blockIdx.x * blockDim.x + threadIdx.x;
+    if (col < col_N){
+        for (int r=0; r<row_M; r++){
+            float P_value = 0;
+            for (int k=0; k<col_M; k++){
+                P_value += M[r*col_M+k] * N[k*col_N+col];
+            }
+            P[r*col_N + col] = P_value;
+        }
+   }
+}
+```
 
 #### c. Analyze the pros and cons of each of the two kernel designs.
+
+Both row-wise and column-wise kernels result in fewer thread launch (**Pros**). But on the other hand, each thread carries more computational burden (**Cons**). 
+
+In terms of memory access, for both row-wise and column-wise kernels, memory access for N seems to be inefficient, as a thread has to jump from one memory location to another.
