@@ -116,17 +116,31 @@ void foo(float *a_d, float *b_d){
 
 #### a. What is the number of threads per block?
 
-The number of threads per block is 16*32=512.
+The number of threads per block is `16*32=512`.
 
 #### b. What is the number of threads in the grid?
 
-Grid is 19 by 5. So, in total, we have 19 * 5 * 512 = 48640 threads
+Grid is 19 by 5. So, in total, we have `19 * 5 * 512 = 48640` threads
 
 #### c. What is the number of blocks on the grid?
 
-The number of blocks in the grid is 19*5=95.
+The number of blocks in the grid is `19*5=95`.
 
 #### d. What is the n umber of threads that execute the code on line 6?
 
-Only 150*300=45000 threads pass the condition at line 5 and proceeds to line 6.
+Only `150*300=45000` threads pass the condition at line 5 and proceeds to line 6.
+
+#### 4. Consider a 2D matrix with a width of 400 and a height of 500. The matrix is stored as a one dimensional array. Specify the array index of the matrix element at row 20 and column 10:
+
+#### a. If the matrix is stored in row-major order.
+
+Assuming 0-based indexing, for the element at 20th column and 10th row, the index is `(20-1)*400 + (10-1) = 7609`.
+
+#### b. If the matrix is stored in column-major order.
+
+Assuming 0-based indexing, for the element at 20th column and 10th row, the index is `(10-1)*500 + (20-1) = 4519`.
+
+#### 5. Consider a 3D tensor with width of 400, height of 500, and depth of 300. The tensor stored in a one-dimensional array in a row-major order. Specify the index of the tensor at x=10, y=20, z=5.
+
+Assuming the 0-based indexing, the index of the element should be `(5-1)*(400*500)+(10-1)*400+(20-1)`.
 
