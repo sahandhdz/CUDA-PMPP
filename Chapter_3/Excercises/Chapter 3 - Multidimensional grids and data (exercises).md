@@ -90,3 +90,43 @@ void matrixVecMul(float* B_h, float* V_h, float*A_h, size_t n_dim){
     cudaFree(A_d);
 }
 ```
+
+It should be noted that the kernel is designed for square matrices.
+
+#### 3. Consider the following CUDA kernel and the corresponding host function that calls it:
+
+```c++
+__global__
+void foo_kernel(float *a, float *b, unsigned int M, insigned int N){
+    unsigned int row = blockIdx.y*blockDim.y + threadIDx.y;
+    unsigned int col = blockIdx.x*blockDim.x + threadIDx.x;
+    if (row < M && col < N){
+        b[row*N + col] = a[row*N + col]/2.1f + 4.8f;
+    }
+}
+
+void foo(float *a_d, float *b_d){
+    unsigned int M = 150;
+    unsigned int N = 300;
+    dim3 bd(16, 32);
+    dim3 gd((N-1)/16 + 1, (M-1)/32 + 1);
+    foo_kenel<<<gd, bd>>>(a_d, b_d, M, N);
+}
+```
+
+#### a. What is the number of threads per block?
+
+The number of threads per block is 16*32=512.
+
+#### b. What is the number of threads in the grid?
+
+Grid is 19 by 5. So, in total, we have 19 * 5 * 512 = 48640 threads
+
+#### c. What is the number of blocks on the grid?
+
+The number of blocks in the grid is 19*5=95.
+
+#### d. What is the n umber of threads that execute the code on line 6?
+
+Only 150*300=45000 threads pass the condition at line 5 and proceeds to line 6.
+
