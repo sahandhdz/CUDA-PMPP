@@ -15,7 +15,7 @@ int main(){
     for (unsigned int i = 0; i<devCount; i++){
         cudaGetDeviceProperties(&devProp, i);
     }
-
+    
     std::cout << "Number of SMs: " << devProp.multiProcessorCount << std::endl;
     std::cout << "Number of registers available in each SM: " << devProp.regsPerBlock << std::endl; 
     std::cout << "Maximum number of threads allowed in a block: " << devProp.maxThreadsPerBlock << std::endl;
