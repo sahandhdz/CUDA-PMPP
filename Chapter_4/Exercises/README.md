@@ -55,3 +55,41 @@ SIMD efficiency for this warp is %25 as only the first 8 threads (32 to 39) are 
 
 SIMD efficiency for this warp is %75 as only the last 24 threads (104 to 127) are active.
 
+#### d. For the statement on line 08:
+
+##### i. How many warps in the grid are active?
+
+Every warp in the grid has at least one active thread. So 32 warps (all) in the grid are active.
+
+##### ii. How many warps in the grid are divergent?
+
+All warps are partially active, as half of the threads pass the condition and the rest are inactive. Accordingly, all 32 warps are divergent.
+
+##### iii. What is the SIMD efficiency (in %) of warp 0 of block 0?
+
+SIMD efficiency for this warp, at this line of code, is %50 as only half of the threads (0, 2, 4, ..., 30) process this statement.
+
+#### e. For the loop on line 10:
+
+##### i. How many iterations have no divergence?
+
+A warps is non-divergent if all 32 threads have the same `i%3` value. This only happens if all `i` values in the warp are spaced by 3. Since I incrementally increases within a warp, this condition never met for any warp. So the right answer seems to be all warps. However, I have a little doubt that the question is actually asking for the number of iterations happening in each thread inside a warp. In this case, it is obvious that all threads iterate over `j=0,1,2`, there should be no divergence in the first 3 iterations.
+
+##### ii. How many iterations have divergence?
+
+for iterations `j=3, 4` we observe divergence. But, as explained above there is no agreement in the loop condition between the threads inside the warp and the warp is divergent.
+
+#### 2. For a vector addition, assume that the vector length is 2000, each thread calculates one output element, and the thread block size is 512 threads. How many threads will be in the grid?
+
+Four blocks are required to cover the whole vector of 2000 elements. So, we will have `4*512=2048` threads in  total. It should be noted that the last 48 threads in the last block are idle.
+
+#### 3. For the previous question, how many warps do you expect to have divergence due to the boundary check on vector length?
+
+Only the warp that covers the element 1985 to 1999 of the vector have divergence. So the answer is 1 warp.
+
+#### 4. Consider a hypothetical block with 8 threads executing a section of code before reaching a barrier. The threads require the following amount of time (in microseconds) to execute the sections: 2.0, 2.3, 3.0, 2.8, 2.4, 1.9, .6, and 2.9; they spend the rest of their time waiting for the barrier. What percentage of the threads total execution time is spent waiting for the barrier?
+
+
+
+
+
