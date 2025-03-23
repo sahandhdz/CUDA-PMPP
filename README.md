@@ -4,10 +4,6 @@ This repository contains my solutions and implementations for the exercises in t
 
 ![Front Page](front_page.png)
 
-### 📖 Reading Progress: Chapter 5 / 23
-
-<progress value="5" max="23"></progress>
-
 ### 📖 Reading Progress: **Chapter 5 / 23**
 
 ✅ Chapter 1 | ✅ Chapter 2 | ✅ Chapter 3 | ✅ Chapter 4 | 🔄 Chapter 5 | ⬜ Chapter 6 | ⬜ Chapter 7 | ... | ⬜ Chapter 23
