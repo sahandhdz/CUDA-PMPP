@@ -4,6 +4,10 @@ This repository contains my solutions and implementations for the exercises in t
 
 ![Front Page](front_page.png)
 
+### 📖 Reading Progress: Chapter 5 / 23
+
+<progress value="5" max="23"></progress>
+
 ## 📖 About the Book
 *Programming Massively Parallel Processors (PMPP)* is a foundational book for learning GPU computing, CUDA programming, and massively parallel architectures. The exercises cover:
 - GPU architecture and CUDA fundamentals
