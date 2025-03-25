@@ -23,6 +23,21 @@ void matrixMulKernel(float* M, float* N, float* P, int width){
     int ty = threadIdx.y;
 
     // The row amd column of P to work on
+    int row = by * TILE_WIDTH + ty;
+    int col = bx * TILE_WIDTH * tx;
 
+    // Loop over tiles
+    float Pvalue = 0;
+    for (int ph=0; ph<width/TILE_WIDTH; ph++){
+        // collaborative loading of M and N tiles into shared memory
+        Mds[ty][tx] = M[row*width+ph*TILE_WIDTH+tx];
+        Nds[ty][tx] = N[(ph*TILE_WIDTH+ty)*width + col];
+        __syncthreads();
 
+        for (int k =0; k<TILE_WIDTH k++){
+            Pvalue += Mds[ty][k] * Nds[k][tx];
+        }
+        __syncthreads();
+    }
+    P[row*width + col] = Pvalue;
 }
