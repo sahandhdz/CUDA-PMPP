@@ -34,10 +34,59 @@ void matrixMulKernel(float* M, float* N, float* P, int width){
         Nds[ty][tx] = N[(ph*TILE_WIDTH+ty)*width + col];
         __syncthreads();
 
-        for (int k =0; k<TILE_WIDTH k++){
+        for (int k =0; k<TILE_WIDTH; k++){
             Pvalue += Mds[ty][k] * Nds[k][tx];
         }
         __syncthreads();
     }
     P[row*width + col] = Pvalue;
+}
+
+void matrixMul(float* M_h, float* N_h, float* P_h, int width){
+    float* M_d;
+    float* N_d;
+    float* P_d;
+
+    size_t matrix_size = width*width*sizeof(float);
+
+    cudaMalloc((void**)&M_d, matrix_size);
+    cudaMalloc((void**)&N_d, matrix_size);
+    cudaMalloc((void**)&P_d, matrix_size);
+
+    cudaMemcpy(M_d, M_h, matrix_size, cudaMemcpyHostToDevice);
+    cudaMemcpy(N_d, N_h, matrix_size, cudaMemcpyHostToDevice);
+    cudaMemcpy(P_d, P_h, matrix_size, cudaMemcpyHostToDevice);
+
+    dim3 dimgrid(ceil(width/32.0), ceil(width/32.0), 1);
+    dim3 dimblock(32, 32, 1);
+
+    matrixMulKernel<<<dimgrid, dimblock>>>(M_d, N_d, P_d, width);
+
+    cudaMemcpy(P_h, P_d, matrix_size, cudaMemcpyDeviceToHost);
+
+    cudaFree(M_d);
+    cudaFree(N_d);
+    cudaFree(P_d);
+}
+
+void print_matrix(float* A, int row, int col){
+    for (int i=0; i<row; i++){
+        for (int j=0; j<col; j++){
+            std::cout << *(A + i*col + j) << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+int main(){
+    int width = 4;
+    float M[4][4] = {{3.0, 2.0, 1.0, 2.0}, {4.0, -1.0, 1.0, 3.0}, {5.0, 2.0, 3.0, 4.0}, {7.0, -3.0, -1.0, 3.0}};
+
+    float N[4][4] = {{1.0, 4.0, -2.0, 1.0}, {3.0, -1.0, 5.0, 4.0}, {7.0, 3.0, 2.0, 3.0}, {3.0, 2.0, 4.0, 5.0}};
+
+    float P[4][4] = {{0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}};
+
+    matrixMul(&M[0][0], &N[0][0], &P[0][0], width);
+
+    print_matrix(&P[0][0], width, width);
 }
