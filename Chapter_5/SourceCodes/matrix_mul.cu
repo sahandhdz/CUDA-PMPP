@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#define TILE_WIDTH 16
+#define TILE_WIDTH 2
 
 
 // A better more efficient version of the matrix multiplication kernel
@@ -24,14 +24,14 @@ void matrixMulKernel(float* M, float* N, float* P, int width){
 
     // The row amd column of P to work on
     int row = by * TILE_WIDTH + ty;
-    int col = bx * TILE_WIDTH * tx;
+    int col = bx * TILE_WIDTH + tx;
 
     // Loop over tiles
     float Pvalue = 0;
     for (int ph=0; ph<width/TILE_WIDTH; ph++){
         // collaborative loading of M and N tiles into shared memory
-        Mds[ty][tx] = M[row*width+ph*TILE_WIDTH+tx];
-        Nds[ty][tx] = N[(ph*TILE_WIDTH+ty)*width + col];
+        Mds[ty][tx] = M[row*width + ph*TILE_WIDTH + tx];
+        Nds[ty][tx] = N[(ph*TILE_WIDTH + ty)*width + col];
         __syncthreads();
 
         for (int k =0; k<TILE_WIDTH; k++){
@@ -57,8 +57,9 @@ void matrixMul(float* M_h, float* N_h, float* P_h, int width){
     cudaMemcpy(N_d, N_h, matrix_size, cudaMemcpyHostToDevice);
     cudaMemcpy(P_d, P_h, matrix_size, cudaMemcpyHostToDevice);
 
-    dim3 dimgrid(ceil(width/32.0), ceil(width/32.0), 1);
-    dim3 dimblock(32, 32, 1);
+    // width of the matrices in this implementation should be divisible by width of a thread block
+    dim3 dimgrid(ceil(width/2.0), ceil(width/2.0), 1);
+    dim3 dimblock(2, 2, 1);
 
     matrixMulKernel<<<dimgrid, dimblock>>>(M_d, N_d, P_d, width);
 
@@ -84,7 +85,7 @@ int main(){
 
     float N[4][4] = {{1.0, 4.0, -2.0, 1.0}, {3.0, -1.0, 5.0, 4.0}, {7.0, 3.0, 2.0, 3.0}, {3.0, 2.0, 4.0, 5.0}};
 
-    float P[4][4] = {{0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}};
+    float P[4][4] = {{4.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}};
 
     matrixMul(&M[0][0], &N[0][0], &P[0][0], width);
 
