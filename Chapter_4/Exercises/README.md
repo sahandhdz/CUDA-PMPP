@@ -89,6 +89,8 @@ Only the warp that covers the element 1985 to 1999 of the vector have divergence
 
 #### 4. Consider a hypothetical block with 8 threads executing a section of code before reaching a barrier. The threads require the following amount of time (in microseconds) to execute the sections: 2.0, 2.3, 3.0, 2.8, 2.4, 1.9, .6, and 2.9; they spend the rest of their time waiting for the barrier. What percentage of the threads total execution time is spent waiting for the barrier?
 
+The longest time a thread takes to execute its task is 3.0 seconds. All other threads reach the barrier before this and start their waiting time. The to total execution time is `3*8 = 24s` and the total working time is `2+2.3+3+2.8+2.4+1.9+0.6+2.9=17.9s`. Hence, the waiting time is `24-17.9=6.1s`. So about %25.4 of the execution time goes for waiting.
+
 
 
 
