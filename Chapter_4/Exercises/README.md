@@ -91,6 +91,18 @@ Only the warp that covers the element 1985 to 1999 of the vector have divergence
 
 The longest time a thread takes to execute its task is 3.0 seconds. All other threads reach the barrier before this and start their waiting time. The to total execution time is `3*8 = 24s` and the total working time is `2+2.3+3+2.8+2.4+1.9+0.6+2.9=17.9s`. Hence, the waiting time is `24-17.9=6.1s`. So about %25.4 of the execution time goes for waiting.
 
+#### 5. A CUDA programmer says that if they launch a kernel with only 32 threads in each block, they can leave out the `__syncthreads()` instruction wherever barrier synchronization is needed. Do you think this is a good idea? Explain.
+
+It is not a good idea. The programmer may think that 32 threads form a warp and they just perform all instructions at the same time, so there will be no need for synchronization. However, there might be some kind divergence in the instructions, which necessitates a synchronization at some point to guarantee convergence. Moreover, the shared memory read/write action  also requires synchronization. There might be the some cases that the threads in a warp, collaboratively, read data from global memory and write it to the shared memory for later calculations. In this case, before the calculation starts, we need to make sure that all required data have been moved to the shared memory, so `__syncthreads()` will be necessary.
+
+#### 6. If a CUDA device's SM can take up to 1536 threads and up to 4 threads blocks, which of the following block configurations would result in the most number of threads per block?
+
+#### a) 128 threads per block. b) 256 threads per block. c) 512 threads per block. d) 1024 threads per block.
+
+512 thread per block seems to be the best configuration. The reason is that in this case we can choose 3 blocks, and as a result, we will be able to use `3*512=1536` threads, which is the total number of available threads in a SM. 
+
+
+
 
 
 
