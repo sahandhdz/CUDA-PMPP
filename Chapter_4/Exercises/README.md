@@ -101,6 +101,30 @@ It is not a good idea. The programmer may think that 32 threads form a warp and 
 
 512 thread per block seems to be the best configuration. The reason is that in this case we can choose 3 blocks, and as a result, we will be able to use `3*512=1536` threads, which is the total number of available threads in a SM. 
 
+#### 7. Assume a device that allows up to 64 blocks per SM and 2048 threads per SM. Indicate which of the following assignments per SM are possible. In the cases in which it is possible, indicate the occupancy level.
+
+#### a. 8 blocks with 128 threads each.
+
+Assuming the warp size of 32 threads, the SM in total have 64 warps. In the assignment above, we have 8 blocks and 4 warps per block, resulting in a total of 32 warps. Hence, the occupancy is `32/64 = 05`.
+
+#### b. 16 blocks with 64 threads each.
+
+16 blocks with 2 warps per block, results in 32 warps in total. the occupancy level is again `32/64=0.5`.
+
+#### c. 32 blocks with 32 threads each.
+
+So, 32 warps in total. Occupancy will be `32/64=0.5`.
+
+#### d. 64 blocks with 32 threads each.
+
+This will result in 64 warps in total. The occupancy is full, `64/64=1`.
+
+#### e. 32 blocks with 64 threads each.
+
+We have 2 warps per block, resulting in a total of `32*2=64` warps. The occupancy is full.
+
+
+
 
 
 
