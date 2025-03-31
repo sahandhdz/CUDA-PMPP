@@ -123,9 +123,11 @@ This will result in 64 warps in total. The occupancy is full, `64/64=1`.
 
 We have 2 warps per block, resulting in a total of `32*2=64` warps. The occupancy is full.
 
+#### 8. Consider a GPU with the following hardware limits: 2048 threads per SM, 32 blocks per SM, and 64k (65,536) registers per SM. For each of the following kernel characteristics, specify whether the kernel can achieve full occupancy. If not, specify the limiting factor.
 
+#### a. The kernel used 128 threads per block and 30 registers per threads.
 
-
+Yes, the kernel can achieve full occupancy. With 16 blocks, each with 128 threads, there will be a total of 2048 threads per SM. 30 registers per threads then result in 61,440 threads which is less than the limit of 65,5346 threads. So, the kernel can use all threads in SM, showing full occupancy.
 
 
 
