@@ -125,13 +125,23 @@ We have 2 warps per block, resulting in a total of `32*2=64` warps. The occupanc
 
 #### 8. Consider a GPU with the following hardware limits: 2048 threads per SM, 32 blocks per SM, and 64k (65,536) registers per SM. For each of the following kernel characteristics, specify whether the kernel can achieve full occupancy. If not, specify the limiting factor.
 
-#### a. The kernel used 128 threads per block and 30 registers per threads.
+#### a. The kernel uses 128 threads per block and 30 registers per threads.
 
 Yes, the kernel can achieve full occupancy. With 16 blocks, each with 128 threads, there will be a total of 2048 threads per SM. 30 registers per threads then result in 61,440 threads which is less than the limit of 65,5346 threads. So, the kernel can use all threads in SM, showing full occupancy.
 
 #### b. The kernel uses 32 threads per block and 29 registers per thread.
 
+No, the kernel cannot achieve full occupancy. The kerel uses 32 threads per lock and there are at max 32 blocks per SM. So, there will be `32832=1024` threads at max, so the kernel in best case can achieve an occupancy of `1024/2048=0.5`.
+
 #### c. The kernel uses 256 threads per block and 34 registers per thread.
+
+No, the kernel cannot achieve full occupancy. Assuming that the kernel uses 8 blocks (best scenario), there will be `8*256=2048` threads in total which the maximum of available threads per SM. Each threads uses 34 registers, resulting in `2048*34=69,632` threads, which is more than the maximum number of registers per SM. So the register is a limiting factor here. With a simple calculation, we can see that in the best case, 1927 threads can be launches, as `1927*34 = 65,518 < 65.536`. So the maximum occupancy can be `1927/2047=0.94` .
+
+#### 9. A student mentions that they were able to multiply two 1024 X 1024 matrices using a matrix multiplication kernel with 32 X 32 threads blocks. The student using CUDA device that allows up to 512 threads per block and up to 8 blocks per SM. The student further mentions that each thread in a thread block calculates one element of the result matrix. What would be your reaction and why?
+
+The grid architecture is not right. First of all, it has been mentioned that 32x32 blocks are used, which means 1024 threads per block, violating the maximum limit of 512 threads per block. 
+
+Even assuming the 32x32 blocks, we will need 1024 blocks in total. Each SM can have 8 blocks at max, and the rest of blocks will have to wait for their turn. So, basically, full parallelism in the computation of the result matrix may not be achieved. 
 
 
 
