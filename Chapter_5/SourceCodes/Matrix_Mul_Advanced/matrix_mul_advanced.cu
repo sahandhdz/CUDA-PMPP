@@ -22,7 +22,7 @@ void matrixMulKernel(float* M, float* N, float* P, int width){
 
     float Pvalue = 0;
 
-    for (int ph = 0; ph<width/TILE_WIDTH; ph++){
+    for (int ph = 0; ph<width/TILE_WIDTH+1; ph++){
         Mds[ty][tx] = M[row*width + ph*TILE_WIDTH + tx];
         Nds[ty][tx] = N[(ty+ph*TILE_WIDTH)*width + col];
         __syncthreads();
