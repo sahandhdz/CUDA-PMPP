@@ -1,18 +1,13 @@
-#include <stdio.h>
-#include <cstdio>
+#include <iostream>
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-#include <iostream>
 
 #define TILE_WIDTH 2
 
 
-// A better more efficient version of the matrix multiplication kernel
-// Improved by using shared memory
 __global__
 void matrixMulKernel(float* M, float* N, float* P, int width){
-    // Shared memory, accessible for all threads inside a block.
     __shared__ float Mds[TILE_WIDTH][TILE_WIDTH];
     __shared__ float Nds[TILE_WIDTH][TILE_WIDTH];
 
@@ -22,24 +17,22 @@ void matrixMulKernel(float* M, float* N, float* P, int width){
     int tx = threadIdx.x;
     int ty = threadIdx.y;
 
-    // The row amd column of P to work on
     int row = by * TILE_WIDTH + ty;
     int col = bx * TILE_WIDTH + tx;
 
-    // Loop over tiles
     float Pvalue = 0;
-    for (int ph=0; ph<width/TILE_WIDTH; ph++){
-        // collaborative loading of M and N tiles into shared memory
+
+    for (int ph = 0; ph<width/TILE_WIDTH; ph++){
         Mds[ty][tx] = M[row*width + ph*TILE_WIDTH + tx];
-        Nds[ty][tx] = N[(ph*TILE_WIDTH + ty)*width + col];
+        Nds[ty][tx] = N[(ty+ph*TILE_WIDTH)*width + col];
         __syncthreads();
 
-        for (int k =0; k<TILE_WIDTH; k++){
-            Pvalue += Mds[ty][k] * Nds[k][tx];
+        for (int k=0; k<TILE_WIDTH; k++){
+            Pvalue += Mds[ty][k]*Nds[k][tx];
         }
         __syncthreads();
     }
-    P[row*width + col] = Pvalue;
+    P[row*width+col] = Pvalue;
 }
 
 void matrixMul(float* M_h, float* N_h, float* P_h, int width){
@@ -80,12 +73,21 @@ void print_matrix(float* A, int row, int col){
 }
 
 int main(){
-    int width = 4;
-    float M[4][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
+    // int width = 4;
+    // float M[4][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
 
-    float N[4][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
+    // float N[4][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
 
-    float P[4][4] = {{4.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}};
+    // float P[4][4] = {{4.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}};
+
+    int width = 5;
+    float M[5][5] = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
+
+    float N[5][5] = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
+
+    float P[5][5] = {{4.0, 0.0, 0.0, 0.0, 0}, {0.0, 0.0, 0.0, 0.0, 0}, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0}};
+
+
 
     matrixMul(&M[0][0], &N[0][0], &P[0][0], width);
 
