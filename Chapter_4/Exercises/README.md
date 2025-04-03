@@ -1,4 +1,4 @@
-Chapter 4 - Compute architecture and scheduling
+# Chapter 4 - Compute architecture and scheduling
 
 ## Exercises
 
