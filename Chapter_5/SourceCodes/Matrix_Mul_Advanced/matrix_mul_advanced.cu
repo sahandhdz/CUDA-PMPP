@@ -2,6 +2,8 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
+#include <Eigen/Dense>
+
 
 #define TILE_WIDTH 2
 
@@ -73,6 +75,9 @@ void print_matrix(float* A, int row, int col){
 }
 
 int main(){
+    Eigen::MatrixXd A = Eigen::MatrixXd::Random(4, 4);
+    std::cout << "Matrix A:\n" << A << "\n\n";
+
     // int width = 4;
     // float M[4][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
 
