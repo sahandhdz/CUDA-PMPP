@@ -24,5 +24,9 @@ The second synchronization action, actually makes sure that all the required cal
 
 The main point is that the a register is private to a single thread while the scope of access for the shared memory is all the threads inside a block. Accordingly, if data can be used by more than one thread, it can be collaboratively read from the global memory and be written to the shared memory, decreasing the volume of reading data while also saving global memory bandwidth.
 
+#### 5. For our tile matrix-matrix multiplication kernel, if we use a 32 x 32 tile, what is the reduction of memory bandwidth for input matrices M and N?
+
+The total accesses to the global memory for reading the stored elements of matrices A and B will be reduced by a factor of 32.
+
 
 
