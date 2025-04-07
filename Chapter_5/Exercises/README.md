@@ -34,7 +34,9 @@ Local variables are scoped into each single thread. So, for each thread an exclu
 
 #### 7. In the previous question, if a variable is declared as a shared memory variable, how many versions of the variable will be created through the lifetime of the execution of the kernel?
 
-Shared memories are scoped into each block, i.e., for each block of threads one version will be created. Hence, 1000 versios of that variable will be created through the lifetime execution of the kernel.
+Shared memories are scoped into each block, i.e., for each block of threads one version will be created. Hence, 1000 versions of that variable will be created through the lifetime execution of the kernel.
+
+
 
 
 
