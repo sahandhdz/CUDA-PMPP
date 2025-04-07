@@ -14,3 +14,9 @@ Now let increase tiling size to 2. In this case, the 2 x 2 block (4 threads) sho
 
 Now moving to the case of 4 x 4 tiling, we can see that 64 readings from global memory is needed (4 rows of matrix A and 4 columns of matrix B). So, there will be `64/16=4` readings per thread (16 is the number of total treads in the block/tile). It confirms that the number of total accesses to global memory has been divided by 4.
 
+#### 3. What type of incorrect execution behavior can happen if one forgot to use one or both `__syncthreads()` in the kernel of Fig 5.9?
+
+The two `_syncthreads()` commands used in this kernel are used to make sure that the collaborative work of reading from global memory and writing into the shared memory are being done correctly. If we omit the  the first thread synchronization action, the process of reading all required data from global memory may not complete on time, so the threads proceed to calculate the `Pvalue` without the required data which obviously can lead to incorrect calculations. 
+
+The second synchronization action, actually makes sure that all the required calculations with the available data on the shared memory are done and now the threads can move on to the next step, which is reading another tile of float numbers from global memory **or** writing the final value into the the output matrix. If we omit this synchronization, some threads may start transferring data from global memory to the shared memory while some other threads are still working on the previous data. This will eventuate in erroneous calculations.
+
