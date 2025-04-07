@@ -28,5 +28,13 @@ The main point is that the a register is private to a single thread while the sc
 
 The total accesses to the global memory for reading the stored elements of matrices A and B will be reduced by a factor of 32.
 
+#### 6. Assume that a CUDA kernel is launched with 1000 thread blocks, each of which has 512 threads. If a variable is declared as a local variable in the kernel, how many versions of the variable will be created through the lifetime of the execution of the kernel?
+
+Local variables are scoped into each single thread. So, for each thread an exclusive version of that variable will be created. Hence, in total we will have `512,000` versions of that variable.
+
+#### 7. In the previous question, if a variable is declared as a shared memory variable, how many versions of the variable will be created through the lifetime of the execution of the kernel?
+
+Shared memories are scoped into each block, i.e., for each block of threads one version will be created. Hence, 1000 versios of that variable will be created through the lifetime execution of the kernel.
+
 
 
