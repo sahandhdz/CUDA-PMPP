@@ -20,3 +20,9 @@ The two `_syncthreads()` commands used in this kernel are used to make sure that
 
 The second synchronization action, actually makes sure that all the required calculations with the available data on the shared memory are done and now the threads can move on to the next step, which is reading another tile of float numbers from global memory **or** writing the final value into the the output matrix. If we omit this synchronization, some threads may start transferring data from global memory to the shared memory while some other threads are still working on the previous data. This will eventuate in erroneous calculations.
 
+#### 4. Assuming that capacity is not an issue for registers or shared memory, give one important reason why it would be valuable to use shared memory instead of registers to hold values etched from global memory? Explain your answer.
+
+The main point is that the a register is private to a single thread while the scope of access for the shared memory is all the threads inside a block. Accordingly, if data can be used by more than one thread, it can be collaboratively read from the global memory and be written to the shared memory, decreasing the volume of reading data while also saving global memory bandwidth.
+
+
+
