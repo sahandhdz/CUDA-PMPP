@@ -36,7 +36,15 @@ Local variables are scoped into each single thread. So, for each thread an exclu
 
 Shared memories are scoped into each block, i.e., for each block of threads one version will be created. Hence, 1000 versions of that variable will be created through the lifetime execution of the kernel.
 
+#### 8. Consider performing a matrix multiplication of two input matrices with dimensions N x N. How many times is each element in the input matrices requested from global memory when:
 
+#### a. There is no tiling.
+
+Each element will be read `N` times.
+
+#### b. Tiles of size T x T are used?
+
+As we discussed in previous questions, for a tile of size T, the total number of memory accesses will be decreased by a factor of T. SO each element from the input matrices will be read for `N/T` times.
 
 
 
