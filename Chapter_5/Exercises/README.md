@@ -12,7 +12,7 @@ You can think like this. For the case of 8 x 8 matrices, with a tiling of size 1
 
 Now let increase tiling size to 2. In this case, the 2 x 2 block (4 threads) should compute 4 elements of the output matrix. To do so, 2 rows from A and 2 columns from be have to be read from global memory (in a collaborative way). So, in total there will be 32 reads from global memory. Accordingly, there will be `32/4=8` reads per threads. Compared to the case of 1 x 1 tile, we see %50 less reads.
 
-Now moving to the case of 4 x 4 tiling, we can see that 64 readings from global memory is needed (4 rows of matrix A and 4 columns of matrix B). So, there will be `64/16=4` readings per thread (16 is the number of total treads in the block/tile). It confirms that the number of total accesses to global memory has been divided by 4.
+Now moving to the case of 4 x 4 tiling, we can see that 64 readings from global memory is needed (4 rows of matrix A and 4 columns of matrix B). So, there will be `64/16=4` readings per thread (16 is the number of total treads in the block/tile). It confirms that the number of total accesses to global memory has been divided by 4
 
 #### 3. What type of incorrect execution behavior can happen if one forgot to use one or both `__syncthreads()` in the kernel of Fig 5.9?
 
@@ -45,6 +45,12 @@ Each element will be read `N` times.
 #### b. Tiles of size T x T are used?
 
 As we discussed in previous questions, for a tile of size T, the total number of memory accesses will be decreased by a factor of T. SO each element from the input matrices will be read for `N/T` times.
+
+#### 9. A kernel performs 36 floating-point operations and seven 32-bit global memory access per thread. For each of the following device properties, indicate whether this kernel is compute-bound or memory bound.
+
+#### a. Peak FLOPS=200 GFLOPS, peak memory bandwidth=100 GB/second.
+
+#### b. Peak FLOPS=300 GFLOPS, peak memory bandwidth=250 GB/second.
 
 
 
