@@ -71,3 +71,38 @@ void BlockTranspose(float* A_elements, int A_width, int A_height){
 }
 ```
 
+
+
+#### 11. Consider the following CUDA kernel and the coresponding host function that calls it:
+
+```c++
+__global__ void foo_kernel(float* a, float* b){
+    unsigned int i = blockIdx.x*blockDim.x + threadIdx.x;
+    float x[4];
+    __shared__ float y_s;
+    __shared__ float b_s[128];
+    for (unsigned int j=0; i<4; j++){
+        x[j] = a[j*blockDim.x*gridDim.x + i];
+    }
+    if (threadIdx.x == 0){
+        y_s = 7.4f;
+    }
+    b_s[threadIdx.x] = b[i];
+    __syncthreads();
+    b[i] = 2.5*x[0] + 3.7f*x[1] + 6.3f*x[2] + 8.5f*x[3] + y_s*b_s[threadIdx.x] + 
+        b_s[(threadIdx.x + 3)%128];
+}
+
+void foo(int* a_d, int* b_d){
+    unsigned int N = 1024;
+    foo_kernel<<<(N+128-1)/128, 128>>>(a_d, b_d);
+}
+```
+
+#### a. How many versions of the variable i are there?
+
+#### b. How many versions of the array x[] are there?
+
+#### c. How many versions of the variable y_s are there?
+
+#### d. How many versions of the array b_s[] are there?
