@@ -52,5 +52,22 @@ As we discussed in previous questions, for a tile of size T, the total number of
 
 #### b. Peak FLOPS=300 GFLOPS, peak memory bandwidth=250 GB/second.
 
+#### 10. To manipulate tiles, a new CUDA programmer has written a device kernel that will transpose each tile in a matrix. The tiles are of size BLOCK_WIDTH by BLOCK_WIDTH, and each of the dimensions of matrix A is known to be a multiple of BLOCK_WIDTH. The kernel invocation and code are shown below. BLOCK_WIDTH is known at compile time and could be set anywhere from 1 to 20.
 
+```c++
+dim3 blockDim(BLOCK_WIDTH, BLOCK_WIDTH);
+dim3 gridDIm(A_width/blockDim.x, A_heigh/blockDim.y);
+BlockTranspose<<<gridDim, blockDim>>>(A, A_with, A_height);
+
+__global__
+void BlockTranspose(float* A_elements, int A_width, int A_height){
+    __shared__ float blockA[BLOCK_WIDTH][BLOCK_WIDTH];
+    int baseIdx - blockIdx.x * BLOCK_SIZE + threadIdx.x;
+    baseIdx += (blockIdx.y * BLOCK_SIZE + threadIdx.y) * A_width;
+    
+    blockA[threadIdx.y][threadIdx.x] = A_elements[baseIdx];
+    
+    A_elements[baseOdx] = blockA[threadIdx.x][threadIdx.y];
+}
+```
 
