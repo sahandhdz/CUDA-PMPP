@@ -101,7 +101,11 @@ void foo(int* a_d, int* b_d){
 
 #### a. How many versions of the variable i are there?
 
+There exists 8 blocks, with 128 threads in each block, resulting in 1024 threads in total. Variable `i` has a thread scope, meaning that it is specific to each thread. So there will be 1024 versions of variable `i`. **The location where this variable is stored is the register**.
+
 #### b. How many versions of the array x[] are there?
+
+
 
 #### c. How many versions of the variable y_s are there?
 
