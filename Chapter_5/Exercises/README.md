@@ -73,7 +73,7 @@ void BlockTranspose(float* A_elements, int A_width, int A_height){
 
 
 
-#### 11. Consider the following CUDA kernel and the coresponding host function that calls it:
+#### 11. Consider the following CUDA kernel and the corresponding host function that calls it:
 
 ```c++
 __global__ void foo_kernel(float* a, float* b){
@@ -105,7 +105,7 @@ There exists 8 blocks, with 128 threads in each block, resulting in 1024 threads
 
 #### b. How many versions of the array x[] are there?
 
-
+Based on Table 5.1 in the book, array variables are stored automatically in the **local memory**, scoped to each individual thread. So, there will be 1024 versions of array x[].
 
 #### c. How many versions of the variable y_s are there?
 
