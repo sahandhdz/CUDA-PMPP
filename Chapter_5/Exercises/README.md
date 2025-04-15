@@ -113,4 +113,4 @@ Variable `y_s` is declared as shared variable, so it will be scoped to each indi
 
 #### d. How many versions of the array b_s[] are there?
 
-Array`b_s` is declared as shared, so its scope is for each individual block. We have 8 blocks, so there will be 8 versions of array `b_S`.
+Array`b_s` is declared as shared, so it's scoped to each individual block. We have 8 blocks, so there will be 8 versions of array `b_S`.
