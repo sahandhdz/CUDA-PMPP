@@ -50,6 +50,12 @@ As we discussed in previous questions, for a tile of size T, the total number of
 
 #### a. Peak FLOPS=200 GFLOPS, peak memory bandwidth=100 GB/second.
 
+The computation intensity is derived as `36/32=1.125` .
+
+Multiplying this factor by the memory bandwidth results is: `1.125 (FLOP/B) *100 (GB/second) = 225 (GFLOP/second) > 200 GFLOPS`.
+
+So we can see that the resulted number is higher than the peak operation throughput of the GPU. Hence, the kernel is compute-bound.
+
 #### b. Peak FLOPS=300 GFLOPS, peak memory bandwidth=250 GB/second.
 
 #### 10. To manipulate tiles, a new CUDA programmer has written a device kernel that will transpose each tile in a matrix. The tiles are of size BLOCK_WIDTH by BLOCK_WIDTH, and each of the dimensions of matrix A is known to be a multiple of BLOCK_WIDTH. The kernel invocation and code are shown below. BLOCK_WIDTH is known at compile time and could be set anywhere from 1 to 20.
