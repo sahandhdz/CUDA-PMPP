@@ -64,20 +64,30 @@ The computational intensity is 1.125. Accordingly, we have `1.125 (FLOP/B) *250 
 
 ```c++
 dim3 blockDim(BLOCK_WIDTH, BLOCK_WIDTH);
-dim3 gridDIm(A_width/blockDim.x, A_heigh/blockDim.y);
-BlockTranspose<<<gridDim, blockDim>>>(A, A_with, A_height);
+dim3 gridDIm(A_width/blockDim.x, A_height/blockDim.y);
+BlockTranspose<<<gridDim, blockDim>>>(A, A_width, A_height);
 
 __global__
 void BlockTranspose(float* A_elements, int A_width, int A_height){
     __shared__ float blockA[BLOCK_WIDTH][BLOCK_WIDTH];
-    int baseIdx - blockIdx.x * BLOCK_SIZE + threadIdx.x;
+    int baseIdx = blockIdx.x * BLOCK_SIZE + threadIdx.x;
     baseIdx += (blockIdx.y * BLOCK_SIZE + threadIdx.y) * A_width;
     
     blockA[threadIdx.y][threadIdx.x] = A_elements[baseIdx];
     
-    A_elements[baseOdx] = blockA[threadIdx.x][threadIdx.y];
+    A_elements[baseIdx] = blockA[threadIdx.x][threadIdx.y];
 }
 ```
+
+#### a. Out of the possible range of values for BLOCK_SIZE, for what values of BLOCK_SIZE will this kernel function correctly on the device?
+
+
+
+
+
+#### b. If the code does not execute correctly for all BLOCK_SIZE values, what is the root cause of this incorrect execution behavior? Suggest a fix to the code to make it work for all BLOCK_SIZE values.
+
+
 
 
 
